@@ -19,7 +19,7 @@ for i,j in zip(brands,models):
     soup = BeautifulSoup(response.text, "html.parser")
     temp = soup.find('p', class_= "priceblock-price js-version-price").getText()
     if len(temp)==0: 
-       price_range.append(data['Price'][0]) 
+       price_range.append(data['Price'][c]) 
        continue
     price_range.append(temp)
   except: 

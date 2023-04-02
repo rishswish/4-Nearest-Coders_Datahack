@@ -14,7 +14,9 @@ import tensorflow as tf
 # from flasgger import Swagger 
 import streamlit as st
 import numpy as np
-from PIL import Image
+from PIL import Image 
+
+data = pd.read_csv('D:/ADITYA/Documents/DataHack Datathon/Dataset/dataset_temp.csv') 
 
 pickle_in = open('model.pkl', 'rb') 
 regressor = pickle.load(pickle_in) 
@@ -121,7 +123,7 @@ def main():
     st.title("Car Vendor") 
     st.sidebar.title("Second Hand Car Price Prediction")
     brand=st.text_input('Brand',placeholder= 'Type Here')
-    model=st.text_input('Model', placeholder='Type Here')
+    # model=st.text_input('Model', placeholder='Type Here')
     col1,col2 = st.columns(2)
     with col1:
         kms_driven=st.number_input('kms driven') 
@@ -131,6 +133,7 @@ def main():
         used_car_price = st.number_input('Price at which car was purchased')
         # print(kms_driven,engine,power,mileage,used_car_price)
     with col2:
+        model=st.selectbox('Model', list(data[data['Brand']==brand]['Model'].unique()))
         transmission = st.selectbox("Transmission",['Manual', 'Automatic'])
         owner_type = st.selectbox("Owner Type",['First', 'Second','Third','Fourth & Above'])
         location=st.selectbox('Location', ['Mumbai', 'Pune', 'Chennai', 'Coimbatore', 'Hyderabad', 'Jaipur', 'Kochi', 'Kolkata', 'Delhi', 'Bangalore', 'Ahmedabad'])
