@@ -17,6 +17,8 @@ import numpy as np
 from PIL import Image 
 import matplotlib.pyplot as plt
 
+
+
 transmission_dct = {'Automatic': 0, 'Manual': 1}
 location_dct = {'Ahmedabad': 0, 'Bangalore': 1, 'Chennai': 2, 'Coimbatore': 3, 'Delhi': 4, 'Hyderabad': 5, 'Jaipur': 6, 'Kochi': 7, 'Kolkata': 8, 'Mumbai': 9, 'Pune': 10}
 fuel_dct = {'CNG': 0, 'Diesel': 1, 'LPG': 2, 'Petrol': 3}
@@ -25,7 +27,8 @@ brand_dct = {'audi': 0, 'bmw': 1, 'datsun': 2, 'fiat': 3, 'ford': 4, 'honda': 5,
 model_dct = {'1': 0, '3': 1, '5': 2, '6': 3, '7': 4, '800': 5, 'a': 6, 'a-star': 7, 'a3': 8, 'a4': 9, 'a6': 10, 'a7': 11, 'a8': 12, 'accent': 13, 'accord': 14, 'alto': 15, 'amaze': 16, 'ameo': 17, 'aspire': 18, 'avventura': 19, 'b': 20, 'baleno': 21, 'bolero': 22, 'bolt': 23, 'boxster': 24, 'br-v': 25, 'brio': 26, 'brv': 27, 'c-class': 28, 'camry': 29, 'cayenne': 30, 'cayman': 31, 'cedia': 32, 'celerio': 33, 'ciaz': 34, 'city': 35, 'civic': 36, 'cla': 37, 'clubman': 38, 'compass': 39, 'cooper': 40, 'corolla': 41, 'countryman': 42, 'cr-v': 43, 'creta': 44, 'crosspolo': 45, 'duster': 46, 'dzire': 47, 'e-class': 48, 'ecosport': 49, 'eeco': 50, 'elantra': 51, 'elite': 52, 'endeavour': 53, 'eon': 54, 'ertiga': 55, 'esteem': 56, 'estilo': 57, 'etios': 58, 'evalia': 59, 'fabia': 60, 'fiesta': 61, 'figo': 62, 'fluence': 63, 'fortuner': 64, 'freestyle': 65, 'getz': 66, 'gl-class': 67, 'gla': 68, 'glc': 69, 'gle': 70, 'gls': 71, 'go': 72, 'grand': 73, 'grande': 74, 'hexa': 75, 'i10': 76, 'i20': 77, 'ignis': 78, 'ikon': 79, 'indica': 80, 'indigo': 81, 'innova': 82, 'jazz': 83, 'jeep': 84, 'jetta': 85, 'koleos': 86, 'kuv': 87, 'kwid': 88, 'laura': 89, 'linea': 90, 'lodgy': 91, 'logan': 92, 'm-class': 93, 'manza': 94, 'micra': 95, 'mobilio': 96, 'montero': 97, 'mux': 98, 'nano': 99, 'new': 100, 'nexon': 101, 'nuvosport': 102, 'octavia': 103, 'omni': 104, 'outlander': 105, 'pajero': 106, 'panamera': 107, 'passat': 108, 'petra': 109, 'platinum': 110, 'polo': 111, 'pulse': 112, 'punto': 113, 'q3': 114, 'q5': 115, 'q7': 116, 'qualis': 117, 'quanto': 118, 'r-class': 119, 'rapid': 120, 'redi-go': 121, 'renault': 122, 'ritz': 123, 'rover': 124, 'rs5': 125, 's': 126, 's-cross': 127, 's60': 128, 's80': 129, 'safari': 130, 'santa': 131, 'santro': 132, 'scala': 133, 'scorpio': 134, 'slc': 135, 'slk-class': 136, 'sonata': 137, 'ssangyong': 138, 'sumo': 139, 'sunny': 140, 'superb': 141, 'swift': 142, 'sx4': 143, 'teana': 144, 'terrano': 145, 'thar': 146, 'tiago': 147, 'tigor': 148, 'tiguan': 149, 'tt': 150, 'tucson': 151, 'tuv': 152, 'v40': 153, 'vento': 154, 'venture': 155, 'verito': 156, 'verna': 157, 'vitara': 158, 'wagon': 159, 'wrv': 160, 'x-trail': 161, 'x1': 162, 'x3': 163, 'x5': 164, 'x6': 165, 'xc60': 166, 'xc90': 167, 'xcent': 168, 'xe': 169, 'xenon': 170, 'xf': 171, 'xj': 172, 'xuv300': 173, 'xuv500': 174, 'xylo': 175, 'yeti': 176, 'zen': 177, 'zest': 178}
 
 
-data = pd.read_csv('./Dataset/dataset_temp.csv') 
+data = pd.read_csv('D:/ADITYA/Documents/DataHack Datathon/4-Nearest Coders/4-Nearest-Coders_Datahack/Dataset/dataset_temp.csv') 
+data_for_range = pd.read_csv('D:/ADITYA/Documents/DataHack Datathon/4-Nearest Coders/4-Nearest-Coders_Datahack/Dataset/final_data.csv')
 pickle_in = open('model.pkl', 'rb') 
 regressor = pickle.load(pickle_in) 
 
@@ -106,20 +109,24 @@ class_names = ['Daiatsu_Core',
 brands = list(brand_dct.keys())
 def predict_img_annot(model, img):
     img_array = tf.keras.preprocessing.image.img_to_array(img)
+    img_array/=255
     img_array = tf.expand_dims(img_array, 0)
     predictions = model.predict(img_array)
     predicted_class = class_names[np.argmax(predictions[0])]
     confidence = round(100 * (np.max(predictions[0])), 2)
-    return predicted_class, confidence
+    return predicted_class
 
 
 def predict_price(location, kms_driven, fuel_type, transmission, owner_type, mileage, engine, power, seats, used_car_price, brand, model, car_age):
 
-    print(location)
+    # print(location)
     newbie = np.array([[location_dct[location], kms_driven, fuel_dct[fuel_type], transmission_dct[transmission], owner_dct[owner_type], mileage, engine, power, seats, used_car_price, brand_dct[brand], model_dct[model], car_age]])
-    print(newbie)
-    prediction=regressor.predict(newbie) 
-    return prediction
+    # print(newbie)
+    v = data_for_range[(data_for_range['Brand']==brand) & (data_for_range['Model']==model)]['Price Range'].values[0]
+    prediction=regressor.predict(newbie)
+    if prediction > used_car_price: 
+        return used_car_price, v
+    return prediction, v
 
 def analyzer_brand(brand):
     df = pd.read_csv('./Dataset/train-new-car-dataset.csv')
@@ -128,13 +135,13 @@ def analyzer_brand(brand):
     car_no = df_brand.shape[0]
     st.subheader(f'The total no of cars of {brand} brand is {car_no}')
     avg_used_cost = df_brand['Price'].mean()
-    st.subheader(f'The average cost of the {brand} Brand car is {avg_used_cost} lacs')
+    st.subheader(f'The average cost of the {brand} Brand car is {round(avg_used_cost, 2)} lacs')
     cheapest_car_price = df_brand.iloc[np.argmin(df_brand['Price'])]['Price']
     cheapest_variant = df_brand.iloc[np.argmin(df_brand['Price'])][['Model','Variant']].values
     costliest_car_price = df_brand.iloc[np.argmax(df_brand['Price'])]['Price']
     costliest_variant = df_brand.iloc[np.argmax(df_brand['Price'])][['Model','Variant']].values
     st.subheader(f'The cheapest cost of the {brand} Brand car is {cheapest_car_price} lacs with the model {cheapest_variant[0]} and variant would be {cheapest_variant[1]}')
-    st.subheader(f'The cheapest cost of the {brand} Brand car is {costliest_car_price} lacs with the model {costliest_variant[0]} and variant would be {costliest_variant[1]}')
+    st.subheader(f'The costliest cost of the {brand} Brand car is {costliest_car_price} lacs with the model {costliest_variant[0]} and variant would be {costliest_variant[1]}')
 
     # Graphs
     # col1,col2 = st.columns(2)
@@ -188,10 +195,10 @@ def main():
         model=st.selectbox('Model', list(data[data['Brand']==brand]['Model'].unique()))
         transmission = st.selectbox("Transmission",['Manual', 'Automatic'])
         owner_type = st.selectbox("Owner Type",['First', 'Second','Third','Fourth & Above'])
-        location=st.selectbox('Location', ['Mumbai', 'Pune', 'Chennai', 'Coimbatore', 'Hyderabad', 'Jaipur', 'Kochi', 'Kolkata', 'Delhi', 'Bangalore', 'Ahmedabad'])
         year_of_purchase=st.selectbox('Year of purchase', [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019])
         fuel_type = st.selectbox("Fuel type",['Petrol', 'Diesel', 'CNG','LPG'])
-        print(transmission,owner_type,location,year_of_purchase,fuel_type)
+        # print(transmission,owner_type,location,year_of_purchase,fuel_type)
+    location=st.selectbox('Location', ['Mumbai', 'Pune', 'Chennai', 'Coimbatore', 'Hyderabad', 'Jaipur', 'Kochi', 'Kolkata', 'Delhi', 'Bangalore', 'Ahmedabad'])
     seats = st.slider('Number of Seats', 2, 10)
     car_age = 2023 - year_of_purchase
 
@@ -215,12 +222,14 @@ def main():
         # print(type(img))
         # imager = cv2.imread(image)
         
-    print(location, kms_driven, fuel_type, transmission, owner_type, mileage, engine, power, seats, used_car_price, brand, model, car_age)
+    # print(location, kms_driven, fuel_type, transmission, owner_type, mileage, engine, power, seats, used_car_price, brand, model, car_age)
     if(st.button("Predict")): 
-        result = predict_price(location, kms_driven, fuel_type, transmission, owner_type, mileage, engine, power, seats, used_car_price, brand, model, car_age)
-        st.success(f"The predicted value is {result}")
-        f_c = predict_image(classifier, image1)
-        st.success(f"The car is {f_c}")
+        result, val = predict_price(location, kms_driven, fuel_type, transmission, owner_type, mileage, engine, power, seats, used_car_price, brand, model, car_age)
+        f_c = predict_image(classifier, image1) 
+        if f_c=='damaged': 
+            st.error("The selling price will decrease more upto 30% since the car is damaged.")
+        st.success(f"The predicted value is Rs. {result} lakh")
+        st.success(f"The current price range of the car for buying the given model is {val}")
         f_a = predict_img_annot(annotation, image2)
         st.success(f"The car is {f_a}")
         # st.success(f"The car is {f_c}")
