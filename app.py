@@ -176,8 +176,10 @@ def analyzer_brand(brand):
 
 
 def main():
-    st.title("Car Vendor") 
-    st.sidebar.title("Second Hand Car Price Prediction")
+    st.title("Car 101") 
+    st.sidebar.title("Car 101")
+    st.sidebar.subheader("Second Hand Car Price Prediction")
+    st.sidebar.image('./logo.jpg')
     brand=st.text_input('Brand',placeholder= 'Type Here')
     # sidebar stuff
     brandzer = st.sidebar.selectbox('Brands',brands)
