@@ -1,5 +1,5 @@
-# 4-Nearest-Coders_Datahack
-Car 101 - Selling Price Prediction for Used Cars 
+# Car 101 - Selling Price Prediction for Used Cars
+Project performed at DataHack 1.0 organized by DJS-S4DS
 
 <b>Team Name - 4-Nearest Coders</b>
 <br>
