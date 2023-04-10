@@ -10,3 +10,6 @@ Team Members:<br>
 <a href="https://github.com/rishswish">Rishabh Patil</a>
 
 This project aims to leverage machine learning techniques to develop a predictive model that can accurately predict the price of used cars. A large dataset is used that includes information about thousands of used cars, including make, model, year, mileage, condition, and price. The goal of the project is to develop a predictive model that can accurately predict the price of a used car based on these and other factors. 
+
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://rishswish-4-nearest-coders-datahack-app-gz84b6.streamlit.app/)
+```
